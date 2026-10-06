@@ -1,3 +1,4 @@
+mod menu;
 mod tarefa;
 
 use std::env;
@@ -18,6 +19,7 @@ enum Comando {
     },
     Concluir(u32),
     Remover(u32),
+    Menu,
     Ajuda,
 }
 
@@ -41,6 +43,8 @@ fn executar(argumentos: Vec<String>) -> Result<(), String> {
             ajuda();
             return Ok(());
         }
+        // O menu grava o arquivo a cada alteracao, por isso retorna direto.
+        Comando::Menu => return menu::executar(&mut lista, &caminho),
         Comando::Adicionar {
             descricao,
             prioridade,
@@ -72,9 +76,9 @@ fn executar(argumentos: Vec<String>) -> Result<(), String> {
 }
 
 fn analisar(argumentos: &[String]) -> Result<Comando, String> {
-    // `as_deref` transforma Option<&String> em Option<&str> para o match abaixo.
+    // Sem argumentos: abre o menu interativo.
     let Some(comando) = argumentos.first().map(|s| s.as_str()) else {
-        return Ok(Comando::Ajuda);
+        return Ok(Comando::Menu);
     };
 
     match comando {
@@ -115,6 +119,8 @@ fn ajuda() {
     println!(
         "todo_cli - gerenciador de tarefas em linha de comando
 
+Sem argumentos, abre o menu interativo.
+
 COMANDOS
   add <descricao> [alta|media|baixa]   adiciona uma tarefa
   list [--pendentes]                   lista as tarefas por prioridade
@@ -135,8 +141,9 @@ mod testes {
     }
 
     #[test]
-    fn sem_argumentos_mostra_ajuda() {
-        assert_eq!(analisar(&args(&[])).unwrap(), Comando::Ajuda);
+    fn sem_argumentos_abre_o_menu() {
+        assert_eq!(analisar(&args(&[])).unwrap(), Comando::Menu);
+        assert_eq!(analisar(&args(&["help"])).unwrap(), Comando::Ajuda);
     }
 
     #[test]

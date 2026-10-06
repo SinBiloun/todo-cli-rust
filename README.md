@@ -13,7 +13,8 @@ os recursos centrais da linguagem em uma aplicação pequena e executável:
 | Ownership e borrowing | `&mut self` nas operações, `&Tarefa` na listagem |
 | Traits (`Display`, `Ord`) e `derive` | formatação e ordenação por prioridade |
 | Iteradores e closures | `filter`, `map`, `position`, `sort_by_key` |
-| Módulos | `src/tarefa.rs` separado de `src/main.rs` |
+| Módulos | `src/tarefa.rs` e `src/menu.rs` separados de `src/main.rs` |
+| Entrada e saída (`std::io`) | leitura do teclado no modo interativo |
 | Crates externas | `serde` e `serde_json` para gravar em JSON |
 | Testes integrados ao compilador | `cargo test`, 8 testes |
 
@@ -42,6 +43,32 @@ automaticamente no diretório onde o programa é executado. Para começar do zer
 apague esse arquivo.
 
 ## Uso
+
+O programa tem duas interfaces, e as duas gravam no mesmo arquivo.
+
+### Modo interativo
+
+Rodar sem argumentos abre um menu que fica ativo até você escolher sair:
+
+```bash
+cargo run
+```
+
+```
+=== TODO CLI ===
+1  Adicionar tarefa
+2  Listar tarefas
+3  Concluir tarefa
+4  Remover tarefa
+0  Sair
+opcao:
+```
+
+O programa pergunta os dados de cada operação (descrição, prioridade, id). Opção
+inexistente, id não numérico e id inexistente são avisados na tela e o menu
+continua. Para sair, escolha `0` ou pressione Ctrl+Z (Windows) / Ctrl+D (Linux).
+
+### Modo por argumentos
 
 Durante o desenvolvimento, use `cargo run --` antes dos argumentos:
 
@@ -94,14 +121,19 @@ erro: tarefa 99 nao encontrada
 cargo test
 ```
 
-São 8 testes cobrindo a interpretação dos argumentos (comando desconhecido, id não
-numérico, prioridade inválida) e as operações da lista (ids sequenciais, conclusão,
-remoção de id inexistente, ordenação por prioridade).
+São 10 testes cobrindo a interpretação dos argumentos (comando desconhecido, id não
+numérico, prioridade inválida), as operações da lista (ids sequenciais, conclusão,
+remoção de id inexistente, ordenação por prioridade) e a leitura das opções do menu.
 
 ## Estrutura
 
 ```
 src/
-  main.rs     interface de linha de comando: argumentos, despacho, saída
+  main.rs     argumentos de linha de comando, despacho e saída
+  menu.rs     modo interativo: menu, leitura do teclado e validação
   tarefa.rs   regras de negócio: Tarefa, Prioridade, Lista e persistência
 ```
+
+As duas interfaces (`main.rs` e `menu.rs`) chamam os mesmos métodos de `Lista`.
+Nenhuma regra de negócio é duplicada: acrescentar o menu não exigiu mudar uma
+linha de `tarefa.rs`.
