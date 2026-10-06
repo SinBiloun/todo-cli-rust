@@ -137,3 +137,26 @@ src/
 As duas interfaces (`main.rs` e `menu.rs`) chamam os mesmos métodos de `Lista`.
 Nenhuma regra de negócio é duplicada: acrescentar o menu não exigiu mudar uma
 linha de `tarefa.rs`.
+
+## Uso de IA no desenvolvimento
+
+Este projeto foi desenvolvido com apoio do Claude (Claude Code), usado como
+ferramenta de ensino e de compreensão da linguagem. O uso foi o seguinte:
+
+- **Escolha do tema e do roteiro de estudo.** A aplicação foi escolhida por
+  cobrir os recursos centrais de Rust (ownership, `enum`, `match`, `Result`,
+  traits, módulos, crates) em um programa pequeno o bastante para ser entendido
+  por inteiro.
+- **Explicação dos conceitos e das mensagens do compilador.** O borrow checker e
+  o modelo de erros sem exceções foram os pontos que mais exigiram explicação.
+- **Escrita do código em conjunto.** As decisões de desenho foram discutidas
+  antes de serem implementadas: manter as duas interfaces (argumentos e menu),
+  não adicionar a dependência `clap` nem uma biblioteca de TUI, e concentrar as
+  regras de negócio em `tarefa.rs`, separadas das duas interfaces.
+- **Registro no histórico do Git.** Os commits escritos com esse apoio trazem a
+  linha `Co-Authored-By: Claude`, de modo que a autoria fique explícita no
+  próprio repositório.
+
+O código foi lido, executado e testado localmente, e cada recurso da linguagem
+citado na tabela do início deste README aparece no código e pode ser explicado
+durante a apresentação.
