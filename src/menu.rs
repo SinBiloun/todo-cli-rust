@@ -69,7 +69,8 @@ fn mostrar_menu() {
 2  Listar tarefas
 3  Concluir tarefa
 4  Remover tarefa
-0  Sair"
+0  Sair
+"
     );
 }
 
