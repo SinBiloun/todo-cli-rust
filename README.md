@@ -138,6 +138,33 @@ As duas interfaces (`main.rs` e `menu.rs`) chamam os mesmos métodos de `Lista`.
 Nenhuma regra de negócio é duplicada: acrescentar o menu não exigiu mudar uma
 linha de `tarefa.rs`.
 
+## Desenvolvimento por etapas
+
+O projeto não foi escrito de uma vez: cada etapa acrescentou um recurso da
+linguagem, e só começou depois que a anterior rodava.
+
+| Etapa | O que foi feito | O que ela introduziu |
+| --- | --- | --- |
+| 0 | Estudo dos capítulos 1 a 3 do livro oficial, com os exemplos digitados e executados: "Hello, world!", o **jogo de adivinhação** e os exercícios de tipos e controle de fluxo | Cargo, variáveis, `match`, leitura de entrada, mensagens do compilador |
+| 1 | `struct Tarefa`, `enum Prioridade` e a lista em memória | tipos próprios, `Vec`, `impl` e métodos |
+| 2 | Comandos `add`, `list`, `done` e `rm` | `enum Comando`, `match` exaustivo, ownership e borrowing |
+| 3 | Tratamento de erros: id inexistente, prioridade inválida, comando desconhecido | `Option`, `Result` e o operador `?` |
+| 4 | Gravação em `tarefas.json` | módulos, crates externas (`serde`), `std::fs` |
+| 5 | Modo interativo com menu numerado | `std::io`, laço de interação, validação de entrada |
+| 6 | Testes e documentação | `#[test]`, `cargo test`, `cargo fmt`, `cargo clippy` |
+
+O histórico do Git acompanha essas etapas, com uma ressalva honesta: as etapas 1
+a 4 foram desenvolvidas na mesma sessão de trabalho e entraram em um único
+commit inicial; as etapas 5 e 6 têm commits próprios. Para ver:
+
+```bash
+git log --oneline
+```
+
+Antes deste projeto, o jogo de adivinhação do capítulo 2 do livro foi
+implementado separadamente, como exercício. É de lá que vêm o `match` e o
+tratamento de entrada do usuário que aparecem aqui.
+
 ## Uso de IA no desenvolvimento
 
 Este projeto foi desenvolvido com apoio do Claude (Claude Code), usado como
